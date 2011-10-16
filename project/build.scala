@@ -6,7 +6,7 @@ import AndroidKeys._
 object General {
   val settings = Defaults.defaultSettings ++ Seq (
     name := "shouty",
-    version := "0.2",
+    version := "0.3",
     scalaVersion := "2.9.1",
     platformName in Android := "android-8",
     scalacOptions ++= Seq("-deprecation", "-unchecked")
