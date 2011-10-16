@@ -6,5 +6,7 @@ project/plugins/project/
 .DS_Store
 .idea
 .idea_modules
+src/main/libs
+src/main/obj
 \#*\#
 *~

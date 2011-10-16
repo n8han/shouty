@@ -9,6 +9,8 @@ class MainActivity extends Activity {
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
 
+    Encode
+
     import android.net.wifi.WifiManager
     import android.content.Context.WIFI_SERVICE
     val wifiManager = getBaseContext().getSystemService(
