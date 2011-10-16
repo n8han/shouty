@@ -26,35 +26,7 @@ class MainActivity extends Activity {
     })
 
     unfiltered.netty.Http(8080).plan(Hello).start()
-    val filebuf = new File(getBaseContext.getCacheDir(),
-                           "buf.aac")
-    println(filebuf.getAbsolutePath)
-    
-    Mic.start(filebuf)
 
-    new Thread {
-      override def run {
-        Thread.sleep(1000)
-        val is = new BufferedInputStream(new FileInputStream(filebuf))
-        val buf = new Array[Byte](1024*16)
-
-        while (true) {
-          if (is.available() > 0) {
-            val len = is.read(buf)
-            Hello.tick(buf, len)
-          } else {
-            println("none avail")
-          }
-          Thread.sleep(500)
-        }
-      }
-    }.start()
-    new Thread {
-      override def run {
-        Thread.sleep(60000)
-        Mic.stop()
-        println("STOPPED")
-      }
-    }.start()
+    Mic.start(Hello.tick)
   }
 }
