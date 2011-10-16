@@ -3,10 +3,8 @@ package spur.shouty
 import _root_.android.app.Activity
 import _root_.android.os.Bundle
 import _root_.android.widget.TextView
-import org.jboss.netty.channel.{Channel,ChannelFuture,ChannelFutureListener}
-import org.jboss.netty.handler.codec.http.{HttpHeaders, DefaultHttpChunk,
-                                           DefaultHttpChunkTrailer}
-import org.jboss.netty.channel.group.{DefaultChannelGroup, ChannelGroupFuture}
+import java.io.{File,FileInputStream,BufferedInputStream}
+
 class MainActivity extends Activity {
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
@@ -24,61 +22,39 @@ class MainActivity extends Activity {
       (ipAddress >> 24 & 0xff))
 
     setContentView(new TextView(this) {
-      setText("hello, world " + ip)
+      setText("Tune in at http://%s:8080/ ".format(ip))
     })
 
-    import unfiltered.request._
-    import unfiltered.response._
-    import unfiltered.netty._
-    object Hello extends async.Plan with ServerErrorResponse {
-      val ChunkedMp3 =
-        unfiltered.response.Connection(HttpHeaders.Values.CLOSE) ~>
-        TransferEncoding(HttpHeaders.Values.CHUNKED) ~>
-        ContentType("audio/mpeg3")
-      val listeners = new DefaultChannelGroup
-      def intent = {
-        case req =>
-          val initial = req.underlying.defaultResponse(ChunkedMp3)
-          val ch = req.underlying.event.getChannel
-          ch.write(initial).addListener { () =>
-            listeners.add(ch)
-          }
-
-      }
-      def tick(payload: Array[Byte], len: Int) {
-        import org.jboss.netty.buffer.ChannelBuffers
-        println("tick")
-        val chunk = new DefaultHttpChunk(
-          ChannelBuffers.copiedBuffer(payload, 0, len)
-        )
-        listeners.write(chunk)
-      }
-    }
     unfiltered.netty.Http(8080).plan(Hello).start()
+    val filebuf = new File(getBaseContext.getCacheDir(),
+                           "buf.aac")
+    println(filebuf.getAbsolutePath)
+    
+    Mic.start(filebuf)
 
-    import android.os.Handler
-    val handler = new Handler
-    handler.post(new Runnable{
-      def run {
-        import java.io.{File,FileInputStream,BufferedInputStream}
-        val file = new File("/mnt/sdcard/Music/test.mp3");
-        val is = new BufferedInputStream(new FileInputStream(file))
+    new Thread {
+      override def run {
+        Thread.sleep(1000)
+        val is = new BufferedInputStream(new FileInputStream(filebuf))
         val buf = new Array[Byte](1024*16)
 
-        @annotation.tailrec def read() {
-          val len = is.read(buf)
-          if (len > -1) {
+        while (true) {
+          if (is.available() > 0) {
+            val len = is.read(buf)
             Hello.tick(buf, len)
-            Thread.sleep(500)
-            read()
+          } else {
+            println("none avail")
           }
+          Thread.sleep(500)
         }
-        read()
       }
-    })
+    }.start()
+    new Thread {
+      override def run {
+        Thread.sleep(60000)
+        Mic.stop()
+        println("STOPPED")
+      }
+    }.start()
   }
-  implicit def block2listener[T](block: () => T): ChannelFutureListener =
-    new ChannelFutureListener {
-      def operationComplete(future: ChannelFuture) { block() }
-    }
 }
