@@ -8,7 +8,7 @@ object General {
     name := "shouty",
     version := "0.1",
     scalaVersion := "2.9.1",
-    platformName in Android := "android-10",
+    platformName in Android := "android-8",
     scalacOptions ++= Seq("-deprecation", "-unchecked")
   )
 
