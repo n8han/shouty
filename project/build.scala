@@ -29,7 +29,9 @@ object AndroidBuild extends Build {
   lazy val main = Project (
     "shouty",
     file("."),
-    settings = General.fullAndroidSettings ++ AndroidNdk.settings
+    settings = General.fullAndroidSettings ++ 
+      AndroidNdk.settings ++
+      TypedResources.settings
   )
 
   lazy val tests = Project (

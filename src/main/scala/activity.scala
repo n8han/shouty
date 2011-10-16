@@ -2,14 +2,16 @@ package spur.shouty
 
 import _root_.android.app.Activity
 import _root_.android.os.Bundle
-import _root_.android.widget.TextView
+import _root_.android.view.View
 import java.io.{File,FileInputStream,BufferedInputStream}
 
-class MainActivity extends Activity {
+class MainActivity extends Activity with TypedViewHolder {
   lazy val server = unfiltered.netty.Http(8080).plan(Stream)
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
+
+    setContentView(R.layout.recorder)
 
     import android.net.wifi.WifiManager
     import android.content.Context.WIFI_SERVICE
@@ -23,8 +25,13 @@ class MainActivity extends Activity {
       (ipAddress >> 16 & 0xff),
       (ipAddress >> 24 & 0xff))
 
-    setContentView(new TextView(this) {
-      setText("http://%s:%d/ ".format(ip, server.port))
+    findView(TR.stream_url).setText(
+      "http://%s:%d/ ".format(ip, server.port))
+
+    findView(TR.quit).setOnClickListener(new View.OnClickListener() {
+      def onClick(v: View) {
+        MainActivity.this.finish()
+      }
     })
 
     server.start()
@@ -32,8 +39,10 @@ class MainActivity extends Activity {
     Mic.start(encode(Stream.write))
   }
   override def onDestroy() {
+    super.onDestroy()
     Mic.stop()
     Stream.stop()
     server.stop()
+    System.exit(0) // sorry! make this into a service, somebody
   }
 }
