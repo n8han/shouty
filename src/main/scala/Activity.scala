@@ -9,8 +9,6 @@ class MainActivity extends Activity {
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
 
-    Encode
-
     import android.net.wifi.WifiManager
     import android.content.Context.WIFI_SERVICE
     val wifiManager = getBaseContext().getSystemService(
@@ -27,8 +25,8 @@ class MainActivity extends Activity {
       setText("Tune in at http://%s:8080/ ".format(ip))
     })
 
-    unfiltered.netty.Http(8080).plan(Hello).start()
-
-    Mic.start(Hello.tick)
+    unfiltered.netty.Http(8080).plan(Server).start()
+    val encode = Encode(Mic)
+    Mic.start(encode(Server.write))
   }
 }

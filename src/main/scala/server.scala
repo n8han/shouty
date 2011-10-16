@@ -9,7 +9,7 @@ import unfiltered.request._
 import unfiltered.response._
 import unfiltered.netty._
 
-object Hello extends async.Plan with ServerErrorResponse {
+object Server extends async.Plan with ServerErrorResponse {
   val ChunkedMp3 =
     unfiltered.response.Connection(HttpHeaders.Values.CLOSE) ~>
     TransferEncoding(HttpHeaders.Values.CHUNKED) ~>
@@ -22,11 +22,9 @@ object Hello extends async.Plan with ServerErrorResponse {
       ch.write(initial).addListener { () =>
         listeners.add(ch)
       }
-
   }
-  def tick(payload: Array[Byte], len: Int) {
+  def write(payload: Array[Byte], len: Int) {
     import org.jboss.netty.buffer.ChannelBuffers
-    println("tick")
     val chunk = new DefaultHttpChunk(
       ChannelBuffers.copiedBuffer(payload, 0, len)
     )
