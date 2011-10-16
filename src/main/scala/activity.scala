@@ -24,7 +24,7 @@ class MainActivity extends Activity {
       (ipAddress >> 24 & 0xff))
 
     setContentView(new TextView(this) {
-      setText("Tune in at http://%s:8080/ ".format(ip))
+      setText("http://%s:%d/ ".format(ip, server.port))
     })
 
     server.start()
