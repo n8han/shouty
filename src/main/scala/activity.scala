@@ -43,6 +43,7 @@ class MainActivity extends Activity with TypedViewHolder {
     Mic.stop()
     Stream.stop()
     server.stop()
-    System.exit(0) // sorry! make this into a service, somebody
+    Thread.sleep(5000)
+    System.exit(0)
   }
 }
