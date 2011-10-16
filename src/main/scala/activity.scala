@@ -6,6 +6,8 @@ import _root_.android.widget.TextView
 import java.io.{File,FileInputStream,BufferedInputStream}
 
 class MainActivity extends Activity {
+  lazy val server = unfiltered.netty.Http(8080).plan(Stream)
+
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
 
@@ -25,8 +27,13 @@ class MainActivity extends Activity {
       setText("Tune in at http://%s:8080/ ".format(ip))
     })
 
-    unfiltered.netty.Http(8080).plan(Server).start()
+    server.start()
     val encode = Encode(Mic)
-    Mic.start(encode(Server.write))
+    Mic.start(encode(Stream.write))
+  }
+  override def onDestroy() {
+    Mic.stop()
+    Stream.stop()
+    server.stop()
   }
 }

@@ -9,6 +9,8 @@ object Mic {
   val bufferSize = AudioRecord.getMinBufferSize(sampleRate,
                                                 channelConfiguration,
                                                 audioEncoding)*8
+  @volatile private var stopping = false
+
   def start(pcm: (Array[Short], Int) => Unit) {
     val source = (new MediaRecorder).AudioSource.MIC
     val audioRecord = new AudioRecord(source,
@@ -20,12 +22,16 @@ object Mic {
     audioRecord.startRecording()
     new Thread {
       override def run {
-        while(true) {
+        while(!stopping) {
           val buffer = new Array[Short](bufferSize)
           val len = audioRecord.read(buffer, 0, bufferSize)
           pcm(buffer, len)
         }
+        audioRecord.stop()
       }
     }.start()
+  }
+  def stop() {
+    stopping = true
   }
 }

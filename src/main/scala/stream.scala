@@ -9,11 +9,14 @@ import unfiltered.request._
 import unfiltered.response._
 import unfiltered.netty._
 
-object Server extends async.Plan with ServerErrorResponse {
+object Stream extends async.Plan with ServerErrorResponse {
+  @volatile private var stopping = false
+
   val ChunkedMp3 =
     unfiltered.response.Connection(HttpHeaders.Values.CLOSE) ~>
     TransferEncoding(HttpHeaders.Values.CHUNKED) ~>
     ContentType("audio/mp3")
+
   val listeners = new DefaultChannelGroup
   def intent = {
     case req =>
@@ -24,11 +27,19 @@ object Server extends async.Plan with ServerErrorResponse {
       }
   }
   def write(payload: Array[Byte], len: Int) {
-    import org.jboss.netty.buffer.ChannelBuffers
-    val chunk = new DefaultHttpChunk(
-      ChannelBuffers.copiedBuffer(payload, 0, len)
-    )
-    listeners.write(chunk)
+    if (!stopping) {
+      import org.jboss.netty.buffer.ChannelBuffers
+      val chunk = new DefaultHttpChunk(
+        ChannelBuffers.copiedBuffer(payload, 0, len)
+      )
+      listeners.write(chunk)
+    }
+  }
+  def stop() {
+    stopping = true
+    listeners.write(
+      new DefaultHttpChunkTrailer
+    ).await()
   }
   implicit def block2listener[T](block: () => T): ChannelFutureListener =
     new ChannelFutureListener {
