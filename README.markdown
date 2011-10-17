@@ -8,7 +8,7 @@ stream from your microphone to anyone who wants to connect.
 This could be useful in a setting where you want to carry a message
 using phones and computers you already have, without depending on
 external networks and systems. For best results,
-[bring your own wifi][http://wiki.daviddarts.com/PirateBox].
+[bring your own wifi](http://wiki.daviddarts.com/PirateBox).
 
 Download
 --------
