@@ -17,7 +17,10 @@ class ControllerActivity extends Activity with TypedViewHolder {
 
     setContentView(R.layout.recorder)
 
-    findView(TR.stream_url).setText("fixme")
+    val location = getText(R.string.broadcast_content).toString.format(
+      ServerService.broadcastUrl(getBaseContext)
+    )
+    findView(TR.stream_url).setText(location)
 
     findView(TR.quit).setOnClickListener(new View.OnClickListener() {
       def onClick(v: View) {

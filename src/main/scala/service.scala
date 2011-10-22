@@ -4,12 +4,31 @@ import android.content.{Intent,Context}
 import android.app.{
   Service,Notification,NotificationManager,PendingIntent}
 
+object ServerService {
+  val port = 8080
+  def broadcastUrl(baseContext: Context) = {
+    import android.net.wifi.WifiManager
+    import android.content.Context.WIFI_SERVICE
+    val wifiManager = baseContext.getSystemService(
+      WIFI_SERVICE).asInstanceOf[WifiManager]
+    val wifiInfo = wifiManager.getConnectionInfo()
+    val ipAddress = wifiInfo.getIpAddress()
+    val ip = "%d.%d.%d.%d".format(
+      (ipAddress & 0xff),
+      (ipAddress >> 8 & 0xff),
+      (ipAddress >> 16 & 0xff),
+      (ipAddress >> 24 & 0xff))
+
+    "http://%s:%d/".format(ip, port)
+  }
+}
+
 class ServerService extends Service {
   def onBind(intent: Intent) = null
   lazy val notes = getSystemService(
     Context.NOTIFICATION_SERVICE
   ).asInstanceOf[NotificationManager]
-  lazy val server = unfiltered.netty.Http(8080).plan(Stream)
+  lazy val server = unfiltered.netty.Http(ServerService.port).plan(Stream)
 
   override def onStartCommand(intent: Intent,
                               flags: Int,
@@ -20,7 +39,7 @@ class ServerService extends Service {
     server.start()
     Mic.start(encode(Stream.write))
 
-    notify(broadcastUrl)
+    notify(ServerService.broadcastUrl(getBaseContext))
   }
 
   override def onDestroy() {
@@ -30,21 +49,6 @@ class ServerService extends Service {
     server.stop()
   }
 
-  def broadcastUrl = {
-    import android.net.wifi.WifiManager
-    import android.content.Context.WIFI_SERVICE
-    val wifiManager = getBaseContext().getSystemService(
-      WIFI_SERVICE).asInstanceOf[WifiManager]
-    val wifiInfo = wifiManager.getConnectionInfo()
-    val ipAddress = wifiInfo.getIpAddress()
-    val ip = "%d.%d.%d.%d".format(
-      (ipAddress & 0xff),
-      (ipAddress >> 8 & 0xff),
-      (ipAddress >> 16 & 0xff),
-      (ipAddress >> 24 & 0xff))
-
-    "http://%s:%d/".format(ip, server.port)
-  }
 
   def notify(url: String) {
     val note = new Notification(
