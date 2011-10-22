@@ -28,6 +28,7 @@ object Mic {
           pcm(buffer, len)
         }
         audioRecord.stop()
+        stopping = false
       }
     }.start()
   }

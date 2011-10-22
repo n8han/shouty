@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Shouty</string>
-    <string name="started_server">Shouty is shouting</string>
+    <string name="broadcast_title">Shouty broadcast</string>
+    <string name="broadcast_content">Tune in to <b>%s</b></string>
 </resources>

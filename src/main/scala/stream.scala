@@ -40,6 +40,7 @@ object Stream extends async.Plan with ServerErrorResponse {
     listeners.write(
       new DefaultHttpChunkTrailer
     ).await()
+    stopping = false
   }
   implicit def block2listener[T](block: () => T): ChannelFutureListener =
     new ChannelFutureListener {
