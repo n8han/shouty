@@ -1,15 +1,16 @@
 package spur.shouty
 
-import _root_.android.app.Activity
-import _root_.android.os.Bundle
-import _root_.android.view.View
-import java.io.{File,FileInputStream,BufferedInputStream}
+import android.view.View
+import android.content.Intent
+import android.app.Activity
 
-class MainActivity extends Activity with TypedViewHolder {
+class ControllerActivity extends Activity with TypedViewHolder {
   lazy val server = unfiltered.netty.Http(8080).plan(Stream)
 
-  override def onCreate(savedInstanceState: Bundle) {
+  override def onCreate(savedInstanceState: android.os.Bundle) {
     super.onCreate(savedInstanceState)
+
+    startService(new Intent(this, classOf[ServerService]))
 
     setContentView(R.layout.recorder)
 
@@ -30,7 +31,7 @@ class MainActivity extends Activity with TypedViewHolder {
 
     findView(TR.quit).setOnClickListener(new View.OnClickListener() {
       def onClick(v: View) {
-        MainActivity.this.finish()
+        ControllerActivity.this.finish()
       }
     })
 

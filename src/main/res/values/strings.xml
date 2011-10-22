@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">shouty</string>
+    <string name="app_name">Shouty</string>
+    <string name="started_server">Shouty is shouting</string>
 </resources>
