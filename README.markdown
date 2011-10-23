@@ -15,13 +15,19 @@ Download
 
 [From the downloads page](https://github.com/n8han/shouty/downloads).
 
-Playback
---------
+Tested Players
+--------------
 
-You just have to find your player's buried menu for this, "Open
-Location" or "Connect to Stream" or something along those lines. Then,
-enter the URL that appears on your phone's screen when you start the
-app. Also, be on the same wifi network as the phone.
+To listen to Shouty to it you need an app to play streaming mp3. We've
+confirmed support on the following players, by entering in the
+Shouty broadcast URL as described.
+
+* Ubuntu, Banshee - Media -> Open Location...
+* Mac OS 10.7, Safari - Location bar
+* Mac OS 10.7, iTunes - Advanced -> Open Stream...
+* Android, ServeStream - Location bar
+
+Shouty and the player must generally be on the same wifi network.
 
 Protocol
 --------
