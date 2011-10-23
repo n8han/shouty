@@ -45,8 +45,12 @@ class ServerService extends Service {
   override def onDestroy() {
     notes.cancel(R.string.broadcast_title)
     Mic.stop()
-    Stream.stop()
-    server.stop()
+    new Thread {
+      override def run {
+        encode(Stream.stop)(Array.empty, 0)
+        server.stop()
+      }
+    }.start()
   }
 
 

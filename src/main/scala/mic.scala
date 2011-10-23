@@ -25,7 +25,8 @@ object Mic {
         while(!stopping) {
           val buffer = new Array[Short](bufferSize)
           val len = audioRecord.read(buffer, 0, bufferSize)
-          pcm(buffer, len)
+          if (!stopping)
+            pcm(buffer, len)
         }
         audioRecord.stop()
         stopping = false

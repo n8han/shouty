@@ -26,20 +26,23 @@ object Stream extends async.Plan with ServerErrorResponse {
         listeners.add(ch)
       }
   }
-  def write(payload: Array[Byte], len: Int) {
-    if (!stopping) {
+  def chunk(payload: Array[Byte], len: Int) = {
       import org.jboss.netty.buffer.ChannelBuffers
-      val chunk = new DefaultHttpChunk(
+      new DefaultHttpChunk(
         ChannelBuffers.copiedBuffer(payload, 0, len)
       )
-      listeners.write(chunk)
+  }
+  def write(payload: Array[Byte], len: Int) {
+    if (!stopping) {
+      listeners.write(chunk(payload, len))
     }
   }
-  def stop() {
+  def stop(last: Array[Byte], len: Int) {
     stopping = true
-    listeners.write(
-      new DefaultHttpChunkTrailer
-    ).await()
+    if (len > 0)
+      listeners.write(chunk(last, len)).await()
+    listeners.write(new DefaultHttpChunkTrailer).await()
+    listeners.close()
     stopping = false
   }
   implicit def block2listener[T](block: () => T): ChannelFutureListener =

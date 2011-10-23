@@ -105,7 +105,11 @@ Java_spur_shouty_NativeEncode_pcm2mp3(JNIEnv* env,
 
   jsize mp3len = (*env)->GetArrayLength(env, _mp3);
 
-  int ret = lame_encode_buffer(gf, pcm, NULL, pcmlen, mp3, mp3len);
+  int ret;
+  if (pcmlen == 0)
+    ret = lame_encode_flush(gf, mp3, mp3len);
+  else
+    ret = lame_encode_buffer(gf, pcm, NULL, pcmlen, mp3, mp3len);
 
   (*env)->ReleaseShortArrayElements(env, _pcm, pcm, 0);
   (*env)->ReleaseByteArrayElements(env, _mp3, mp3, 0);
