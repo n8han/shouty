@@ -15,7 +15,7 @@ object Stream extends async.Plan with ServerErrorResponse {
   val ChunkedMp3 =
     unfiltered.response.Connection(HttpHeaders.Values.CLOSE) ~>
     TransferEncoding(HttpHeaders.Values.CHUNKED) ~>
-    ContentType("audio/mp3")
+    ContentType("audio/mpeg")
 
   val listeners = new DefaultChannelGroup
   def intent = {
