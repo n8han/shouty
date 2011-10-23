@@ -37,11 +37,12 @@ Shoutcast/Icecast, but we don't need to interleave track names
 (although, that might be interesting) and plain HTTP works fine in the
 players tested.
 
-Interface
----------
+Needs
+-----
 
-The interface is really terrible. Can you (yes you!) please fork and
-make it better?
+What to help this project? See the [open issues][issues].
+
+[issues]: https://github.com/n8han/shouty/issues
 
 Building and Contributing
 -------------------------
