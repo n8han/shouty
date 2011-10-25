@@ -1,3 +1,7 @@
+src/main/bin/
+src/main/gen/
+src/main/.classpath
+src/main/.project
 lib_managed/
 project/boot/
 target/
