@@ -56,7 +56,7 @@ class ServerService extends Service {
 
   def notify(url: String) {
     val note = new Notification(
-      android.R.drawable.stat_sys_upload,
+      R.drawable.note,
       null,
       System.currentTimeMillis())
 
