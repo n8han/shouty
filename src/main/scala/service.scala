@@ -13,13 +13,16 @@ object ServerService {
       WIFI_SERVICE).asInstanceOf[WifiManager]
     val wifiInfo = wifiManager.getConnectionInfo()
     val ipAddress = wifiInfo.getIpAddress()
-    val ip = "%d.%d.%d.%d".format(
-      (ipAddress & 0xff),
-      (ipAddress >> 8 & 0xff),
-      (ipAddress >> 16 & 0xff),
-      (ipAddress >> 24 & 0xff))
-
-    "http://%s:%d/".format(ip, port)
+    if (ipAddress == 0)
+      None
+    else
+      Some("http://%d.%d.%d.%d:%d/".format(
+        (ipAddress & 0xff),
+        (ipAddress >> 8 & 0xff),
+        (ipAddress >> 16 & 0xff),
+        (ipAddress >> 24 & 0xff),
+        port
+      ))
   }
 }
 
@@ -39,7 +42,7 @@ class ServerService extends Service {
     server.start()
     Mic.start(encode(Stream.write))
 
-    notify(ServerService.broadcastUrl(getBaseContext))
+    ServerService.broadcastUrl(getBaseContext).map(notify)
   }
 
   override def onDestroy() {

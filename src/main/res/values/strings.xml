@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Shouty</string>
     <string name="broadcast_title">Shouty broadcast</string>
-    <string name="broadcast_content">Tune in to <b>%s</b></string>
+    <string name="broadcast_content">Tune in to %s</string>
+    <string name="no_wifi_title">No Wi-Fi</string>
+    <string name="no_wifi_message">
+      Shouty requires a connection to a local wireless network.
+    </string>
+    <string name="no_wifi_button">Quit</string>
 </resources>
