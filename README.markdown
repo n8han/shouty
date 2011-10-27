@@ -13,7 +13,7 @@ external networks and systems. For best results,
 Get Shouty
 ----------
 
-Shout is available [in the Android Market][market], free of charge.
+Shouty is available [in the Android Market][market], free of charge.
 
 [market]: https://market.android.com/details?id=spur.shouty&feature=search_result#?t=W251bGwsMSwxLDEsInNwdXIuc2hvdXR5Il0.
 
