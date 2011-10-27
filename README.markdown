@@ -1,4 +1,4 @@
-![Shouty](https://github.com/n8han/shouty/raw/master/src/main/art/market-icon.png)
+![Shouty](https://github.com/n8han/shouty/raw/master/src/main/res/drawable-xhdpi/icon.png)
 
 Shouty
 ======
