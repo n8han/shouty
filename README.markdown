@@ -15,7 +15,7 @@ Get Shouty
 
 Shouty is available [in the Android Market][market], free of charge.
 
-[market]: https://market.android.com/details?id=spur.shouty&feature=search_result#?t=W251bGwsMSwxLDEsInNwdXIuc2hvdXR5Il0.
+[market]: https://market.android.com/details?id=spur.shouty
 
 Tested Players
 --------------
