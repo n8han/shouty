@@ -1,5 +1,4 @@
-![Shouty](https://github.com/n8han/shouty/raw/master/src/main/res/drawable-xhdpi/icon.png)  
-Shouty
+![Shouty](https://github.com/n8han/shouty/raw/master/src/main/res/drawable-xhdpi/icon.png) Shouty
 ======
 
 Shouty is an Android app for **ad hoc broadcasting**. Using any local
