@@ -10,10 +10,12 @@ using phones and computers you already have, without depending on
 external networks and systems. For best results,
 [bring your own wifi](http://wiki.daviddarts.com/PirateBox).
 
-Download
---------
+Get Shouty
+----------
 
-[From the downloads page](https://github.com/n8han/shouty/downloads).
+Shout is available [in the Android Market][market], free of charge.
+
+[market]: https://market.android.com/details?id=spur.shouty&feature=search_result#?t=W251bGwsMSwxLDEsInNwdXIuc2hvdXR5Il0.
 
 Tested Players
 --------------
