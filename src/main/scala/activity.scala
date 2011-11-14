@@ -13,14 +13,18 @@ class ControllerActivity extends Activity with TypedViewHolder {
   override def onCreate(savedInstanceState: android.os.Bundle) {
     super.onCreate(savedInstanceState)
 
-    startService(new Intent(this, classOf[ServerService]))
-
     setContentView(R.layout.recorder)
+  }
 
+  override def onStart() {
+    super.onStart()
     ServerService.broadcastUrl(getBaseContext) match {
       case Some(location) =>
-        getText(R.string.broadcast_content).toString.format(location)
-        findView(TR.stream_url).setText(location)
+        startService(new Intent(this, classOf[ServerService]))
+
+        findView(TR.stream_url).setText(
+          getText(R.string.broadcast_content).toString.format(location)
+        )
 
         findView(TR.quit).setOnClickListener(
           new View.OnClickListener() {
